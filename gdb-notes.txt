@@ -1,0 +1,20 @@
+info proc # show pid, cmdline
+shell lsof -p 5262 # show file handles (incl. paths)
+signal 0 # continue with no signal (i.e. ignore signal)
+thread 1 # switch to thread 1
+catch syscall ptrace # break on given syscall
+set print asm-demangle on # enable demangling
+run # start execution
+continue # continue after breakpoint
+set $rax = 0
+delete 1 # delete breakpoint #1
+set follow-fork-mode child # when program forks, switch to child process
+info proc map # view memory
+find 0x5555555554000, +0x27000, {char[4]}"flag" # search 0x27000 bytes of memory
+# just "flag" would also search for trailing null byte
+break _ZN8CNetConn6SetKeyEOSt6vectorIcSaIcEE # set a breakpoint
+handle SIGSEGV nostop noprint nopass # completely ignore SIGSEGV
+
+In ~/.gdbinit:
+file WSFibre # load program WSFibre
+
